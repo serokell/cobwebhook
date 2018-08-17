@@ -18,9 +18,7 @@ defmodule Cobwebhook.Slack do
     secrets = apply(fun, [])
 
     if secret = Utils.find_first(secrets, &Signature.valid?(signature, &1, {timestamp, body})) do
-      conn
-      |> assign(:payload, Poison.decode!(body))
-      |> assign(:secret, secret)
+      conn |> assign(:secret, secret)
     else
       conn |> send_resp(403, "") |> halt()
     end
