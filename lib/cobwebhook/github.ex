@@ -17,9 +17,7 @@ defmodule Cobwebhook.GitHub do
     secrets = apply(fun, [])
 
     if secret = Utils.find_first(secrets, &Signature.valid?(signature, &1, body)) do
-      conn
-      |> assign(:payload, Poison.decode!(body))
-      |> assign(:secret, secret)
+      conn |> assign(:secret, secret)
     else
       conn |> send_resp(403, "") |> halt()
     end
